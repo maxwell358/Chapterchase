@@ -14,7 +14,6 @@ export const serializeData = <T>(data: T): T => JSON.parse(JSON.stringify(data))
 // Auto generate slug
 export function generateSlug(text: string): string {
   return text
-      .replace(/\.[^/.]+$/, '') // Remove file extension (.pdf, .txt, etc.)
       .toLowerCase() // Convert to lowercase
       .trim() // Remove whitespace from both ends
       .replace(/[^\w\s-]/g, '') // Remove special characters (keep letters, numbers, spaces, hyphens)

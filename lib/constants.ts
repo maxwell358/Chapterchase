@@ -93,7 +93,14 @@ export const MAX_IMAGE_SIZE = 10 * 1024 * 1024; // 10MB
 export const ACCEPTED_IMAGE_TYPES = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp'];
 
 // Pre-configured VAPI assistant ID (hardcoded for this app)
-export const ASSISTANT_ID = process.env.NEXT_PUBLIC_ASSISTANT_ID!;
+if (!process.env.NEXT_PUBLIC_ASSISTANT_ID) {
+    if (process.env.NODE_ENV === 'production') {
+        throw new Error('Missing required env NEXT_PUBLIC_ASSISTANT_ID. Please add it to your environment variables.');
+    } else {
+        console.warn('Warning: Missing required env NEXT_PUBLIC_ASSISTANT_ID. VAPI features may not work correctly.');
+    }
+}
+export const ASSISTANT_ID = process.env.NEXT_PUBLIC_ASSISTANT_ID || 'vapi-assistant-id-placeholder';
 
 // 11Labs Voice IDs - Optimized for conversational AI
 // Voices selected for natural, engaging book conversations

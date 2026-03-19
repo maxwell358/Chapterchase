@@ -1,5 +1,6 @@
 import React from 'react'
 import Link from 'next/link'
+import Image from 'next/image'
 import { BookCardProps } from "@/types";
 
 
@@ -10,7 +11,7 @@ const BookCard = ({ title, author, coverURL, slug } : BookCardProps) => {
                 <div className="book-card-3d book-card-3d-hover">
                     <div className="book-card-spine" />
                     <div className="book-card-cover-wrapper">
-                        <img
+                        <Image
                             src={coverURL}
                             alt={title}
                             width={133}

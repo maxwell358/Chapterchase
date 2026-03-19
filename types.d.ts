@@ -116,10 +116,3 @@ export interface FileUploadFieldProps<T extends FieldValues> {
     placeholder: string;
     hint: string;
 }
-
-export interface BookCardProps {
-    title: string
-    author: string
-    image: string
-    slug: string
-}

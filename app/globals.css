@@ -626,13 +626,21 @@
     }
   }
   .voice-selector-option-selected {
-    @apply bg-[var(--accent-light)] border-[var(--accent-warm)];
+    @apply bg-[var(--accent-light)] border-[var(--accent-warm)] ring-2 ring-[var(--accent-warm)] ring-offset-2;
   }
   .voice-selector-option-default {
     @apply bg-white;
 
     &:hover {
       @apply bg-[var(--bg-secondary)];
+    }
+
+    &.peer-focus-visible {
+      @apply outline-none ring-2 ring-[var(--accent-warm)] ring-offset-2;
+    }
+
+    &.peer-checked {
+      @apply bg-[var(--accent-light)] border-[var(--accent-warm)];
     }
   }
   .voice-selector-option-disabled {

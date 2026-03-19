@@ -30,14 +30,15 @@ const UploadForm = () => {
   useEffect(() => {
     setIsMounted(true);
   }, []);
-    
+
   const form = useForm<BookUploadFormValues>({
     resolver: zodResolver(UploadSchema),
     defaultValues: {
       title: '',
       author: '',
-      voice: DEFAULT_VOICE,
-    
+      persona: DEFAULT_VOICE,
+      pdfFile: undefined,
+      coverImage: undefined,
     },
   });
 
@@ -61,8 +62,13 @@ const UploadForm = () => {
         return;
       }
 
-      const fileTitle = data.title.replace(/\s+/g, '-').toLowerCase();
+      const fileTitle = data.title.replace(/\s+/g, '-').toLowerCase() + '-' + Date.now();
       const pdfFile = data.pdfFile;
+      if (!pdfFile) {
+        toast.error("Please select a PDF file");
+        setIsSubmitting(false);
+        return;
+      }
 
       const pdfUploadPromise = upload(fileTitle, pdfFile, {
         access: 'public',
@@ -79,6 +85,7 @@ const UploadForm = () => {
 
       if(parsedPDF.content.length === 0) {
         toast.error("Failed to parse PDF. Please try again with a different file.");
+        setIsSubmitting(false);
         return;
       }
 
@@ -96,7 +103,7 @@ const UploadForm = () => {
           contentType: coverFile.type
         });
         coverUrl = uploadedCoverBlob.url;
-      } else {
+      } else if (parsedPDF.coverBlob) {
         setLoadingMessage("Uploading cover image...");
         const uploadedCoverBlob = await upload(`${fileTitle}_cover.png`, parsedPDF.coverBlob, {
           access: 'public',
@@ -104,6 +111,8 @@ const UploadForm = () => {
           contentType: parsedPDF.coverBlob.type || 'image/png'
         });
         coverUrl = uploadedCoverBlob.url;
+      } else {
+        coverUrl = "/assets/book-placeholder.png";
       }
 
       setLoadingMessage("Creating your book...");
@@ -123,6 +132,8 @@ const UploadForm = () => {
         if (book.isBillingError) {
           router.push("/subscriptions");
         }
+        setIsSubmitting(false);
+
         return;
       }
 
