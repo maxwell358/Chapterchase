@@ -2,9 +2,10 @@ import type { Metadata } from "next";
 import { IBM_Plex_Serif } from "next/font/google";
 import { ClerkProvider } from "@clerk/nextjs";
 
-import "../globals.css";
+import "./globals.css";
 import { Mona_Sans } from "next/font/google";
 import Navbar from "@/components/Navbar";
+import { Toaster } from "@/components/ui/sonner";
 
 
 const ibmPlexSerif = IBM_Plex_Serif({
@@ -39,6 +40,7 @@ export default function RootLayout({
         <ClerkProvider>
           <Navbar />
           {children}
+          <Toaster />
         </ClerkProvider>
       </body>
     </html>

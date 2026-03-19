@@ -1,4 +1,6 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Chapterchase
+
+An interactive AI conversation tool for your books. Upload PDFs and chat with them using voice.
 
 ## Getting Started
 
@@ -16,9 +18,48 @@ bun dev
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Environment Variables
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+To get started, create a `.env.local` file in the root of the project and add the following:
+
+```bash
+# Clerk (Authentication)
+NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=pk_test_...
+CLERK_SECRET_KEY=sk_test_...
+
+# Clerk URL redirects
+NEXT_PUBLIC_CLERK_SIGN_IN_URL=/sign-in
+NEXT_PUBLIC_CLERK_SIGN_UP_URL=/sign-up
+NEXT_PUBLIC_CLERK_AFTER_SIGN_IN_URL=/
+NEXT_PUBLIC_CLERK_AFTER_SIGN_UP_URL=/
+
+# Database (MongoDB)
+MONGODB_URL=mongodb+srv://...
+
+# Vapi (Voice AI)
+NEXT_PUBLIC_VAPI_PUBLIC_KEY=...
+VAPI_SECRET_KEY=...
+NEXT_PUBLIC_ASSISTANT_ID=...
+
+# Vercel Blob (File Uploads)
+BLOB_READ_WRITE_TOKEN=...
+```
+
+## Clerk Configuration Warning
+
+If you see the warning:
+`Clerk: Clerk has been loaded with development keys. Development instances have strict usage limits...`
+
+This is normal in a development environment. Clerk uses `pk_test_` and `sk_test_` keys for development.
+
+### To fix this for production:
+1. Go to your [Clerk Dashboard](https://dashboard.clerk.com).
+2. Create a new application or go to your existing one.
+3. Switch to **Production mode** in the dashboard.
+4. Copy your **Production Publishable Key** (`pk_live_...`) and **Secret Key** (`sk_live_...`).
+5. Add these keys to your production environment variables (e.g., in Vercel's environment variables dashboard).
+
+Once production keys are set, this warning will disappear.
 
 ## Learn More
 
