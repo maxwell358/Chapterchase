@@ -3,8 +3,66 @@
 import dbConnect from "@/lib/db";
 import Book from "@/lib/models/book.model";
 import BookSegment from "@/lib/models/book-segment.model";
-import type { CreateBook } from "@/types";
+import type { CreateBook, IBook } from "@/types";
 import { generateSlug, serializeData } from "@/lib/utils";
+import { revalidatePath } from "next/cache";
+
+export type GetBooksResult = {
+  success: boolean
+  data?: IBook[]
+  error?: string
+}
+
+export async function getBooks(clerkId: string): Promise<GetBooksResult> {
+  try {
+    await dbConnect();
+
+    const books = await Book.find({ clerkId }).sort({ createdAt: -1 });
+
+    return {
+      success: true,
+      data: serializeData(books),
+    };
+  } catch (error: any) {
+    console.error("Error getting books:", error);
+    return {
+      success: false,
+      error: error.message || "Failed to get books",
+    };
+  }
+}
+
+export type GetBookBySlugResult = {
+  success: boolean
+  data?: IBook
+  error?: string
+}
+
+export async function getBookBySlug(slug: string): Promise<GetBookBySlugResult> {
+  try {
+    await dbConnect();
+
+    const book = await Book.findOne({ slug });
+
+    if (!book) {
+      return {
+        success: false,
+        error: "Book not found",
+      };
+    }
+
+    return {
+      success: true,
+      data: serializeData(book),
+    };
+  } catch (error: any) {
+    console.error("Error getting book by slug:", error);
+    return {
+      success: false,
+      error: error.message || "Failed to get book",
+    };
+  }
+}
 
 export type CheckBookExistsResult = {
   exists: boolean
@@ -112,6 +170,8 @@ export async function saveBookSegments(
     await Book.findByIdAndUpdate(bookId, {
       totalSegments: segments.length,
     });
+
+    revalidatePath("/");
 
     return { success: true };
   } catch (error: any) {

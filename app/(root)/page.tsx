@@ -2,11 +2,19 @@ import React from 'react'
 import Image from "next/image";
 import Link from "next/link";
 import { auth } from "@clerk/nextjs/server";
-import { sampleBooks } from "@/lib/constants";
 import BookCard from "@/components/BookCard";
+import { getBooks } from "@/lib/actions/book.actions";
 
 const Page = async () =>  {
     const { userId } = await auth();
+    let books = [];
+
+    if (userId) {
+        const result = await getBooks(userId);
+        if (result.success && result.data) {
+            books = result.data;
+        }
+    }
 
     return (
         <main className="container" data-signed-in={Boolean(userId)}>
@@ -73,15 +81,27 @@ const Page = async () =>  {
             </section>
             <section className="wrapper mt-10 lg:mt-14">
                 <div className="library-books-grid">
-                    {sampleBooks.map((book) => (
-                        <BookCard
-                            key={book._id}
-                            title={book.title}
-                            author={book.author}
-                            coverURL={book.coverURL}
-                            slug={book.slug}
-                        />
-                    ))}
+                    {books.length > 0 ? (
+                        books.map((book) => (
+                            <BookCard
+                                key={book._id}
+                                title={book.title}
+                                author={book.author}
+                                coverURL={book.coverURL}
+                                slug={book.slug}
+                            />
+                        ))
+                    ) : (
+                        <div className="col-span-full flex flex-col items-center justify-center py-20 text-center">
+                            <div className="library-empty-state">
+                                <h2 className="text-xl font-semibold mb-2">Your library is empty</h2>
+                                <p className="text-muted-foreground mb-6">Upload your first book to get started.</p>
+                                <Link href="/books/new" className="library-cta-primary">
+                                    Upload Book
+                                </Link>
+                            </div>
+                        </div>
+                    )}
                 </div>
             </section>
         </main>
