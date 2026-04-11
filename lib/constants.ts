@@ -95,7 +95,7 @@ export const ACCEPTED_IMAGE_TYPES = ['image/jpeg', 'image/jpg', 'image/png', 'im
 // Pre-configured VAPI assistant ID (hardcoded for this app)
 if (!process.env.NEXT_PUBLIC_ASSISTANT_ID) {
     if (process.env.NODE_ENV === 'production') {
-        throw new Error('Missing required env NEXT_PUBLIC_ASSISTANT_ID. Please add it to your environment variables.');
+        console.error('Missing required env NEXT_PUBLIC_ASSISTANT_ID. VAPI features may not work correctly until it is configured.');
     } else {
         console.warn('Warning: Missing required env NEXT_PUBLIC_ASSISTANT_ID. VAPI features may not work correctly.');
     }
@@ -173,4 +173,3 @@ export const CLERK_AUTH_APPEARANCE_OVERRIDE = {
     formFieldLabel: 'text-[#212a3b] font-medium text-lg',
     footerActionLink: 'text-[#212a3b] hover:text-[#3d485e] text-base font-medium',
 };
-

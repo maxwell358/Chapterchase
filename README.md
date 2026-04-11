@@ -32,7 +32,7 @@ The following environment variables are needed for the app to function properly:
 
 - **Clerk (Authentication):** `NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY`, `CLERK_SECRET_KEY`
 - **Clerk URL redirects:** `NEXT_PUBLIC_CLERK_SIGN_IN_URL`, etc.
-- **Database (MongoDB):** `MONGODB_URL`
+- **Database (MongoDB):** `MONGODB_URI`
 - **Vapi (Voice AI):** `NEXT_PUBLIC_VAPI_PUBLIC_KEY`, `VAPI_SECRET_KEY`, `NEXT_PUBLIC_ASSISTANT_ID`
 - **Vercel Blob (File Uploads):** `BLOB_READ_WRITE_TOKEN`
 
