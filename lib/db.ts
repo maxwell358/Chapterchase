@@ -14,14 +14,11 @@ const globalWithMongoose = global as typeof globalThis & {
   mongoose?: MongooseCache;
 };
 
-let cached = globalWithMongoose.mongoose;
-
-if (!cached) {
-  cached = globalWithMongoose.mongoose = { conn: null, promise: null };
-}
-
 async function dbConnect() {
   const mongoUri = process.env.MONGODB_URI || process.env.MONGODB_URL;
+  const cached =
+    globalWithMongoose.mongoose ??
+    (globalWithMongoose.mongoose = { conn: null, promise: null });
 
   if (!mongoUri) {
     throw new Error(
