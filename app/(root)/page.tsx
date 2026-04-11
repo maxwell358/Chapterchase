@@ -4,10 +4,11 @@ import Link from "next/link";
 import { auth } from "@clerk/nextjs/server";
 import BookCard from "@/components/BookCard";
 import { getBooks } from "@/lib/actions/book.actions";
+import type { IBook } from "@/types";
 
 const Page = async () =>  {
     const { userId } = await auth();
-    let books = [];
+    let books: IBook[] = [];
 
     if (userId) {
         const result = await getBooks(userId);
